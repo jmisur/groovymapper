@@ -9,16 +9,4 @@ class Animal {
 	String sex
 	int height
     String color
-
-	void setSex(String sex) {
-		this.sex = sex
-	}
-
-	void setName(String name) {
-		this.name = name
-	}
-
-	void setHeight(int height) {
-		this.height = height
-	}
 }

@@ -12,5 +12,4 @@ class Person {
     enum Gender {
         MAN, WOMAN
     }
-
 }

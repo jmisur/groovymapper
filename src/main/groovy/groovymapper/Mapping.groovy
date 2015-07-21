@@ -1,4 +1,5 @@
 package groovymapper
+
 import groovy.transform.AnnotationCollector
 import groovy.transform.CompileStatic
 

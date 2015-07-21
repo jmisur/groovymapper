@@ -20,9 +20,8 @@ class MapperTest {
     @Mapping
     def doMap(Person person, Animal animal) {
         person.map(animal, ['height']) { Person p ->
-            age = new BigDecimal(p.age)
+            age = new BigDecimal(p.age) // for some reason Intellij cannot assign int to BigDec
             sex = p.gender == Person.Gender.MAN ? "MALE" : "FEMALE"
-//            color = p.color.reverse()
         }
     }
 }

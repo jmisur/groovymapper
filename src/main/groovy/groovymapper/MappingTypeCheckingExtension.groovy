@@ -11,67 +11,21 @@ class MappingTypeCheckingExtension extends GroovyTypeCheckingExtensionSupport.Ty
 
 	def run() {
 		methodNotFound { receiver, name, argList, argTypes, call ->
-
 		}
 
 		unresolvedVariable { var ->
-			def scope = getCurrentScope()
-//			println "VAR: $var in scope of ${scope}"
-//			if (scope.name == 'mapping') {
-//				scope.vars << var.name
-//				handled = true
-//			}
 		}
 
 		unresolvedProperty { pexp ->
-//			println "PROP: " + pexp
 		}
 
 		unresolvedAttribute { aex ->
-//			println "ARR: " + aex
 		}
 
 		beforeMethodCall { call ->
-//			print "BEFORE METHOD CALL: "
-			switch (call) {
-				case org.codehaus.groovy.ast.expr.ConstructorCallExpression:
-//					println "new ${call.type.name}()"
-					break
-				case org.codehaus.groovy.ast.expr.MethodCallExpression:
-//					println "$call.method.value"
-//					if (call.method.value == "map") {
-//						newScope {
-//							name = 'mapping'
-//							vars = []
-//						}
-//						println "ENTERING SCOPE ${getCurrentScope()}"
-//					}
-					break
-				default:
-//					println call
-					break;
-			}
 		}
 
 		afterMethodCall { call ->
-//			print "AFTER METHOD CALL: "
-			switch (call) {
-				case org.codehaus.groovy.ast.expr.ConstructorCallExpression:
-//					println "new ${call.type.name}()"
-					break
-				case org.codehaus.groovy.ast.expr.MethodCallExpression:
-//					println "$call.method.value"
-//					if (call.method.value == "map") {
-//						println "EXITING SCOPE: ${getCurrentScope()}"
-//						scopeExit {
-//							vars.each { addStaticTypeError("The variable [$it] is undeclared", call) }
-//						}
-//					}
-					break
-				default:
-//					println call
-					break
-			}
 		}
 
 		onMethodSelection { call, node ->
@@ -144,11 +98,9 @@ class MappingTypeCheckingExtension extends GroovyTypeCheckingExtensionSupport.Ty
 		}
 
 		beforeVisitMethod { methodNode ->
-//			println "BEFORE VISIT METHOD: " + methodNode.name
 		}
 
 		afterVisitMethod { methodNode ->
-//			println "AFTER VISIT METHOD: " + methodNode.name
 		}
 	}
 }

@@ -13,7 +13,7 @@ import org.codehaus.groovy.transform.GroovyASTTransformation
 class MappingAstTransformation implements ASTTransformation {
 
     void visit(ASTNode[] astNodes, SourceUnit sourceUnit) {
-        println "CALLED $astNodes"
+//        println "CALLED $astNodes"
         if (!astNodes) return
         if (!astNodes[0]) return
         if (!astNodes[1]) return
@@ -29,12 +29,13 @@ class MappingAstTransformation implements ASTTransformation {
         def param = clos.parameters[0]
         def closs = clos.code.statements
 
+        // TODO auto-discover fields
         def assignment = createAssignment(param, "name")
-        println "CODE: $assignment"
+//        println "CODE: $assignment"
         closs.add(0, assignment)
 
         assignment = createAssignment(param, "color")
-        println "CODE: $assignment"
+//        println "CODE: $assignment"
         closs.add(0, assignment)
     }
 
