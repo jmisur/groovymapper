@@ -2,26 +2,30 @@ package groovymapper
 
 import org.junit.Test
 
+import static groovymapper.Person.Gender.MAN
+
 class MapperTest {
 
     @Test
     void test() {
-        Person person = new Person(name: 'John', age: 30, gender: Person.Gender.MAN, color: 'white')
+        Person person = new Person(name: 'John', age: 30, gender: MAN, color: 'red')
+        println person
         Animal animal = new Animal()
+        println animal
         println doMap(person, animal)
 
-        assert animal.age == 30
-        assert animal.color == 'white'
-        assert animal.height == 0
         assert animal.name == 'John'
-        assert animal.sex == "MALE"
+        assert animal.age == 70
+        assert animal.male == true
+        assert animal.height == null
+        assert animal.color == 'red'
     }
 
     @Mapping
     def doMap(Person person, Animal animal) {
         person.map(animal, ['height']) { Person p ->
-            age = new BigDecimal(p.age) // for some reason Intellij cannot assign int to BigDec
-            sex = p.gender == Person.Gender.MAN ? "MALE" : "FEMALE"
+            age = new BigDecimal(100 - p.age)
+            male = p.gender == MAN
         }
     }
 }

@@ -13,7 +13,7 @@ import org.codehaus.groovy.transform.GroovyASTTransformation
 class MappingAstTransformation implements ASTTransformation {
 
     void visit(ASTNode[] astNodes, SourceUnit sourceUnit) {
-//        println "CALLED $astNodes"
+        // println "CALLED $astNodes"
         if (!astNodes) return
         if (!astNodes[0]) return
         if (!astNodes[1]) return
@@ -23,24 +23,43 @@ class MappingAstTransformation implements ASTTransformation {
 
         MethodNode method = astNodes[1]
 
-        def clos = method.getCode().statements[0].expression.arguments[2]
-//        println "CODE: $clos"
+        def signature = method.getCode().statements[0].expression
+        // println signature
 
-        def param = clos.parameters[0]
+        // discover source class
+        def sourceType = signature.objectExpression.type
+        // println "SOURCE CLASS: $sourceType"
+
+        // discover target class
+        def targetType = signature.arguments[0].type
+        // println "TARGET CLASS: $targetType"
+
+        // discover the closure (last parameter from map method)
+        def clos = signature.arguments[2]
+        // println "CODE: $clos"
+
+        // actual code statements in closure
         def closs = clos.code.statements
 
-        // TODO auto-discover fields
-        def assignment = createAssignment(param, "name")
-//        println "CODE: $assignment"
-        closs.add(0, assignment)
+        // closure parameter = source object
+        def sourceParam = clos.parameters[0]
 
-        assignment = createAssignment(param, "color")
-//        println "CODE: $assignment"
-        closs.add(0, assignment)
+        // discover which properties can be auto-mapped
+        def sourceMap = sourceType.properties.collectEntries { [it.name, it.type.name] }
+        // println "SOURCEMAP: $sourceMap"
+        def params = targetType.properties.findAll { sourceMap[it.name] == it.type.name }.collect { it.name }
+        // println "AUTO-MAPPABLE: $params"
+
+        params.each {
+            def assignment = createAssignment(sourceParam, it)
+            // println "CODE: $assignment"
+            closs.add(0, assignment)
+        }
     }
 
+    // assignment in format 'field = p.field' where p is closure param name
     private Statement createAssignment(Parameter param, String field) {
-        new AstBuilder().buildFromSpec {
+        (Statement) new AstBuilder().buildFromSpec {
             expression {
                 binary {
                     expression << new VariableExpression(new DynamicVariable(field, false))

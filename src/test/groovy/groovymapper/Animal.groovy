@@ -2,11 +2,11 @@ package groovymapper
 
 import groovy.transform.ToString;
 
-@ToString
+@ToString(includeNames = true)
 class Animal {
     String name
 	BigDecimal age
-	String sex
-	int height
+	boolean male
+	Integer height
     String color
 }

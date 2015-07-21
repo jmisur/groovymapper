@@ -2,7 +2,7 @@ package groovymapper;
 
 import groovy.transform.ToString;
 
-@ToString
+@ToString(includeNames = true)
 class Person {
     String name
 	int age
